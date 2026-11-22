@@ -1,0 +1,142 @@
+/* Base */
+:root {
+  color-scheme: dark;            /* dark dropdowns, scrollbars and form controls */
+  --surface: #202830;            /* page background */
+  --ink: #ffffff;                /* main text */
+  --ink-2: #99aabb;              /* secondary text, axis labels */
+  --muted: #678;                 /* faint text */
+  --grid: #2c3440;               /* gridlines */
+  --axis: #456;                  /* axis lines, input borders */
+  --accent: #00e054;             /* Letterboxd green */
+  --card: rgba(32, 40, 48, 0.94);/* phone step cards */
+  --panel: #2c3440;              /* tooltip, inputs, buttons */
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--surface);
+  background-color: #202830;
+  color: var(--ink);
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.5;
+}
+
+h1, h2 { line-height: 1.15; }
+code { font-size: 0.9em; background: var(--panel); padding: 0 4px; border-radius: 4px; }
+
+/* Intro and outro styling */
+.intro, .outro {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 12vh 24px 8vh;
+}
+.intro h1 { font-size: clamp(2.2rem, 6vw, 3.6rem); margin: 0.2em 0; }
+.kicker { color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.8rem; }
+.dek { font-size: 1.25rem; color: var(--ink-2); }
+.scroll-cue { color: var(--muted); margin-top: 6vh; }
+.outro { padding-top: 10vh; color: var(--ink-2); }
+
+/* "Scrolly" layout (steps left, graphic right) */
+#scrolly {
+  display: flex;
+  flex-direction: row-reverse;  /* graphic on the right */
+  gap: 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+#graphic {
+  position: sticky; /* key stays while scrolling */
+  top: 6vh;
+  height: 88vh;
+  flex: 1 1 62%;
+  display: flex;
+  flex-direction: column;
+}
+#chart { flex: 1 1 auto; min-height: 0; width: 100%; display: block; }
+
+#story { flex: 1 1 38%; max-width: 420px; }
+
+.step {
+  min-height: 85vh; /* space between beats */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  opacity: 0.3;
+  transition: opacity 300ms;
+}
+.step:last-child { min-height: 100vh; } /* lets the last step reach the trigger line */
+.step.is-active { opacity: 1; }
+.step h2 { font-size: 1.35rem; margin: 0 0 0.4em; }
+.step p { font-size: 1.05rem; margin: 0; }
+.step p + p { margin-top: 0.6em; }
+.step .hint { font-size: 0.92rem; color: var(--ink-2); }
+
+/* Legend/controls */
+#legend { display: flex; flex-wrap: wrap; gap: 6px 14px; min-height: 28px; padding: 4px 0; font-size: 0.85rem; }
+#legend button {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 0; background: none; padding: 2px 0; font: inherit; color: var(--ink-2); cursor: default;
+}
+#legend.interactive button { cursor: pointer; }
+#legend button[aria-pressed="false"] { opacity: 0.35; text-decoration: line-through; }
+#legend .swatch { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+/* Control row keeping height */
+#controls { min-height: 38px; display: flex; align-items: center; font-size: 0.9rem; padding: 4px 0; }
+#controls .ctl { display: none; align-items: center; gap: 8px; }
+#controls.show-bars .ctl-bars, #controls.show-explore .ctl-explore { display: flex; }
+.ctl-label { color: var(--ink-2); }
+#controls select, #controls button { font: inherit; padding: 3px 10px; border: 1px solid var(--axis); border-radius: 6px; background: var(--panel); color: var(--ink); cursor: pointer; }
+#controls .ctl-bars button[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--surface); }
+
+/* Chart pieces */
+.axis text { fill: var(--ink-2); font-size: 11px; }
+.axis path, .axis line { stroke: var(--axis); }
+.axis .tick line.grid { stroke: var(--grid); }
+.axis-label { fill: var(--ink-2); font-size: 12px; }
+.median-line { fill: none; stroke: var(--ink); stroke-width: 2; }
+.dot { stroke: var(rgba(45, 52, 64, 0.6)); stroke-width: 0.6; }
+.bar { cursor: pointer; }
+.bar-label { fill: var(--ink); font-size: 12px; font-weight: 600; }
+.partial-label { fill: var(--ink-2); font-size: 11px; }
+
+/* Tooltip */
+.tooltip {
+  position: fixed;
+  pointer-events: none;
+  opacity: 0;
+  background: var(--panel);
+  color: var(--ink);
+  border: 1px solid var(--grid);
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 0.85rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  max-width: 260px;
+  transition: opacity 120ms;
+  z-index: 10;
+}
+.tooltip strong { display: block; margin-bottom: 2px; }
+.tooltip .meta { color: var(--ink-2); }
+
+/* Phones support if necessary */
+@media (max-width: 800px) {
+  #scrolly { display: block; padding: 0 12px; }
+  #graphic { top: 0; height: 70vh; }
+  #story { position: relative; z-index: 2; max-width: none; margin-top: -40vh; pointer-events: none; }
+  .step > * { pointer-events: auto; } /* only text cards catch taps (chart underneath stays clickable) */
+  .step { opacity: 1; }
+  .step > * { background: var(--card); padding: 10px 14px; border-radius: 8px; }
+  .step h2 { margin: 0; border-radius: 8px 8px 0 0; }
+  .step p { border-radius: 0 0 8px 8px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .step, .tooltip { transition: none; }
+}
+
+#year-bars { width: 100%; height: 90px; flex: none; }

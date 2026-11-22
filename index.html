@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Odyssey at the Cinema</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Intro header -->
+  <header class="intro">
+    <p class="kicker">An Exploration of Modern-Day Film</p>
+    <h1>The Odyssey at the Cinema </h1>
+    <p class="dek">
+      It feels like every movie nowadays is an odyssey. 
+    </p>
+    <p class="dek"> You spend 3, 4, even 5 hours in a theater. But are longer movies actually better?</p>
+    <p class="dek">
+      First, let's look at the current landscape of modern cinema. </p>
+      <p class="dek"><span data-stat="releasedTotal">…</span> movies have been released since 2016. Just a few thousand of them got people's attention.
+    </p>
+    <p class="scroll-cue" aria-hidden="true">Scroll down to start your journey.</p>
+  </header>
+
+  <!-- "Scrollytelling" section -->
+  <main id="scrolly">
+
+    <!-- Graphic stays pinned when scrolling -->
+    <div id="graphic">
+      <!-- Control row's contents change w/ step (always keeps space) -->
+      <div id="controls">
+        <div class="ctl ctl-bars" role="group" aria-label="What to count">
+          <span class="ctl-label">Count</span>
+          <button type="button" data-measure="all" aria-pressed="true">All titles</button>
+          <button type="button" data-measure="feature" aria-pressed="false">Feature films</button>
+          <button type="button" data-measure="notable" aria-pressed="false">Notable films</button>
+        </div>
+        <div class="ctl ctl-explore">
+          <label for="genre-select" class="ctl-label">Genre</label>
+          <select id="genre-select"></select>
+          <button id="reset-filters" type="button">Reset</button>
+        </div>
+      </div>
+      <div id="legend" aria-label="Studio tier legend"></div>
+      <svg id="year-bars" aria-label="Notable films per year: click a bar to filter"></svg>
+      <svg id="chart" role="img" aria-label="Chart of films that changes as you scroll"></svg>
+    </div>
+
+    <!-- Each .step = one story beat (section) -->
+    <article id="story">
+      <section class="step" data-step="0">
+        <h2>Every dot is a film.</h2>
+        <p data-stat="dotIntro">…</p>
+      </section>
+
+      <section class="step" data-step="1">
+        <h2>How many movies came out each year?</h2>
+        <p><strong data-stat="peakYear">…</strong> had the most releases:
+           <strong data-stat="peakCount">…</strong> titles. In 2020, releases changed by
+           <strong data-stat="change2020">…</strong> compared with 2019.</p>
+        <p class="hint"></p>
+        <ul class="hint">
+          <li>Hover over a bar to see how many movies came out that year.</li>
+          <li>Use the buttons to switch between all titles, feature films and notable films.</li>
+          <li>Click a year to select it; click again to clear.</li>
+          <li>Your selection is reflected in the runtime exploration at the end.</li>
+        </ul>
+      </section>
+      </section>
+
+      <section class="step" data-step="2">
+        <h2>Which studios made the most notable films?</h2>
+        <p>One dot per notable film is stacked by year and colored by studio tier. Major
+           studios made <strong data-stat="bigBoxShare">…</strong> of them; independents made
+           <strong data-stat="indieShare">…</strong>.</p>
+      </section>
+
+      <section class="step" data-step="3">
+        <h2>A few films got most of the attention</h2>
+        <p>The highlighted dots are the top 5% of films by IMDb votes. Together, they hold
+           <strong data-stat="top5Share">…</strong> of all votes cast on these films.</p>
+      </section>
+
+      <section class="step" data-step="4">
+        <h2>How long are they?</h2>
+        <p>Height is runtime. The line is each year's median film length: it went from
+           <strong data-stat="rtFirst">…</strong> in <span data-stat="firstYear">…</span> to
+           <strong data-stat="rtLast">…</strong> in <span data-stat="lastFullYear">…</span>.</p>
+      </section>
+
+      <section class="step" data-step="5">
+        <h2>But are longer films better?</h2>
+        <p>Here, we plot runtime against IMDb rating. Bigger dots got more votes. Films of 150+ minutes have an average score of
+           <strong data-stat="ratingLong">…</strong>, and films under 90 minutes had an average score of <strong data-stat="ratingShort">…</strong></p>
+      </section>
+
+      <section class="step" data-step="6">
+        <h2>Your turn</h2>
+        <p>Explore the notable films yourself:</p>
+        <ul class="hint-list">
+          <li>Click a year in the small bar chart to show only that year.</li>
+          <li>Click again to clear your selection.</li>
+          <li>Click a studio tier in the legend to hide or show it.</li>
+          <li>Pick a genre from the dropdown.</li>
+          <li>Hover over any dot for its details.</li>
+          <li>Press Reset to clear all filters.</li>
+      </section>
+    </article>
+  </main>
+
+  <!-- 3. Sources and methodology -->
+  <footer class="outro">
+    <h2>Data card</h2>
+    <p>The Ultimate 1 Million Movies Dataset was downloaded from Kaggle and filtered to films released from 2016 onward.
+       "Notable" means a feature film (40+ minutes) with at least
+       <span data-stat="notableMinVotes">…</span> IMDb votes. Studio tiers come from each film's
+       production companies, NOT its distributor.</p>
+  </footer>
+
+  <div id="tooltip" class="tooltip" role="status" aria-live="polite"></div>
+
+  <!-- Libraries from Labs 2 - 4 -->
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.2/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/scrollama@3.2.0/build/scrollama.min.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
